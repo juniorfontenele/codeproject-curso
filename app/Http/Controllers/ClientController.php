@@ -2,7 +2,7 @@
 
 namespace CodeProject\Http\Controllers;
 
-use CodeProject\Client;
+use CodeProject\Entities\Client;
 use Illuminate\Http\Request;
 
 use CodeProject\Http\Requests;
@@ -10,11 +10,11 @@ use CodeProject\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+	/**
+	 * Display a listing of the resource.
+	 * 
+	 * @return \Illuminate\Http\Response
+	 */
     public function index()
     {
         return Client::all();
@@ -51,7 +51,17 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $client = Client::find($id);
+	    if (!$client) {
+		    return response()->json(['message' => 'Usuário não encontrado!'], 404);
+	    }
+	    $client->fill($request->all());
+	    if ($client->save()) {
+		    return $client;
+	    }
+	    else {
+	        return response()->json(['message' => 'Falha ao atualizar'], 400);
+        }
     }
 
     /**
@@ -62,6 +72,15 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        Client::find($id)->delete();
+        $client = Client::find($id);
+	    if (!$client) {
+		    return response()->json(['message' => 'Usuário não encontrado!'],404);
+	    }
+	    if ($client->delete()) {
+		    return response()->json(['message' => 'Usuário excluído com sucesso!'],200);
+	    }
+	    else {
+	        return response()->json(['message' => 'Falha ao excluir usuário!'],500);
+        }
     }
 }
