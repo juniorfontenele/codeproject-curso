@@ -22,3 +22,11 @@ Route::group(['prefix' => 'client'], function() {
     Route::put('/{id}', 'ClientController@update')->where(['id' => '\d+']);
     Route::delete('/{id}', 'ClientController@destroy')->where(['id' => '\d+']);
 });
+
+Route::group(['prefix' => 'project'], function() {
+    Route::get('/', 'ProjectController@index');
+    Route::post('/', 'ProjectController@store');
+    Route::get('/{id}', 'ProjectController@show')->where(['id' => '\d+']);
+    Route::put('/{id}', 'ProjectController@update')->where(['id' => '\d+']);
+    Route::delete('/{id}', 'ProjectController@destroy')->where(['id' => '\d+']);
+});

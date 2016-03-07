@@ -2,31 +2,30 @@
 
 namespace CodeProject\Http\Controllers;
 
-use CodeProject\Repositories\ClientRepository;
-use CodeProject\Services\ClientService;
+use CodeProject\Repositories\ProjectRepository;
+use CodeProject\Services\ProjectService;
 use Illuminate\Http\Request;
 
 use CodeProject\Http\Requests;
 
-class ClientController extends Controller
+class ProjectController extends Controller
 {
-
     /**
-     * @var ClientService
-     */
-    protected $service;
-
-    /**
-     * @var ClientRepository
+     * @var ProjectRepository
      */
     protected $repository;
 
     /**
-     * ClientController constructor.
-     * @param ClientRepository $repository
-     * @param ClientService $service
+     * @var ProjectService
      */
-    public function __construct(ClientRepository $repository, ClientService $service)
+    protected $service;
+
+    /**
+     * ProjectController constructor.
+     * @param ProjectRepository $repository
+     * @param ProjectService $service
+     */
+    public function __construct(ProjectRepository $repository, ProjectService $service)
     {
         $this->repository = $repository;
         $this->service = $service;
@@ -36,14 +35,14 @@ class ClientController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @internal param ClientRepository $repository
      */
     public function index()
     {
-        return $this->repository->all();
+        return $this->repository->with(['owner','client'])->all();
     }
 
-   /**
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,6 +75,7 @@ class ClientController extends Controller
             return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
         }
     }
+
 
     /**
      * Update the specified resource in storage.

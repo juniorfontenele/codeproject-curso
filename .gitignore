@@ -3,6 +3,6 @@
 Homestead.yaml
 Homestead.json
 .env
-/.idea
+.idea
 composer.phar
 .DS_Store
