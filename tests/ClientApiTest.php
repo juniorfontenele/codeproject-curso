@@ -80,18 +80,14 @@ class ClientApiTest extends TestCase
         $client = \CodeProject\Entities\Client::create($client);
         $this->delete('/client/'.$client->id)
             ->seeStatusCode(200)
-            ->seeJson([
-                'success' => ['Usuário excluído com sucesso']
-            ]);
+            ->seeJson();
     }
 
     public function testGetNonExistentClient()
     {
         $this->get('/client/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-               'not_found' => ['Usuário não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testUpdateNonExistentClient()
@@ -106,25 +102,21 @@ class ClientApiTest extends TestCase
         ];
         $this->put('/client/9123812931238123',$client)
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Usuário não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testDeleteNonExistentClient()
     {
         $this->delete('/client/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Usuário não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testInsertClientWithoutRequiredFields()
     {
         $client = [];
         $this->post('/client',$client)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ]);
@@ -141,7 +133,7 @@ class ClientApiTest extends TestCase
             'obs' => 'New PHPUnit OBS'
         ];
         $this->post('/client',$client)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ])

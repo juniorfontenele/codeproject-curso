@@ -16,6 +16,14 @@ class Project extends Model
         'due_date'
     ];
 
+    protected $dates = ['due_date'];
+
+    protected $casts = [
+        'owner_id' => 'integer',
+        'client_id' => 'integer',
+        'progress' => 'integer'
+    ];
+
     public function client()
     {
         return $this->belongsTo(Client::class);

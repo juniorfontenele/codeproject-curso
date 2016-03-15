@@ -8,9 +8,10 @@
 namespace CodeProject\Services;
 
 
+use CodeProject\Exceptions\CodeProjectException;
 use CodeProject\Repositories\ProjectRepository;
 use CodeProject\Validators\ProjectValidator;
-use Prettus\Validator\Exceptions\ValidatorException;
+use Illuminate\Support\MessageBag;
 
 class ProjectService
 {
@@ -25,9 +26,6 @@ class ProjectService
      */
     protected $repository;
 
-    protected $error_message;
-    protected $status_code;
-
     /**
      * ProjectService constructor.
      * @param ProjectRepository $repository
@@ -41,119 +39,37 @@ class ProjectService
 
     public function create(array $data)
     {
-        try {
-            $this->validator->with($data)->passesOrFail();
-            return $this->repository->create($data);
-        } catch (ValidatorException $e) {
-            $this->error_message = [
-                'error' => true,
-                'message' => $e->getMessageBag()
-            ];
-            $this->status_code = 500;
-            return false;
-        }
+        $this->validator->with($data)->passesOrFail();
+        return $this->repository->create($data);
     }
 
     public function update(array $data, $id)
     {
-        try {
-            $this->validator->with($data)->passesOrFail();
-            $project = $this->repository->find($id);
-            if (!$project) {
-                $this->error_message = [
-                    'error' => true,
-                    'message' => [
-                        'not_found' => [
-                           'Projeto não encontrado'
-                        ]
-                    ]
-                ];
-                $this->status_code = 404;
-                return false;
-            }
-            if ($project->update($data)) {
-                return $project;
-            }
-            else {
-                $this->error_message = [
-                    'error' => true,
-                    'message' => [
-                        'fail' => [
-                            'Falha ao atualizar'
-                        ]
-                    ]
-                ];
-                $this->status_code = 500;
-                return false;
-            }
-        } catch (ValidatorException $e) {
-            $this->error_message = [
-                'error' => true,
-                'message' => $e->getMessageBag()
-            ];
-            $this->status_code = 500;
-            return false;
+        $this->validator->with($data)->passesOrFail();
+        $project = $this->repository->find($id);
+        if (!$project->update($data)) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao atualizar']),500);
         }
+        return $project;
     }
 
     public function destroy($id)
     {
         $project = $this->repository->find($id);
-        if (!$project) {
-            $this->error_message = [
-                'error' => true,
-                'message' => [
-                    'not_found' => ['Projeto não encontrado']
-                ]
-            ];
-            $this->status_code = 404;
-            return false;
+        if (!$project->delete()) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao excluir']),500);
         }
-        if ($project->delete()) {
-            return [
-                'error' => false,
-                'message' => [
-                    'success' => ['Projeto excluído com sucesso']
-                ]
-            ];
-        }
-        else {
-            $this->error_message = [
-                'error' => true,
-                'message' => [
-                    'fail' => ['Falha ao excluir projeto']
-                ]
-            ];
-            $this->status_code = 500;
-            return false;
-        }
+        return [
+            'error' => false,
+            'message' => [
+                'success' => ['Excluído com sucesso']
+            ]
+        ];
     }
 
     public function show($id)
     {
         $project = $this->repository->find($id);
-        if (!$project) {
-            $this->error_message = [
-                'error' => true,
-                'message' => [
-                    'not_found' => ['Projeto não encontrado']
-                ]
-            ];
-            $this->status_code = 404;
-            return false;
-        }
-        else {
-            return $project;
-        }
-    }
-
-    public function getErrorMessage()
-    {
-        return $this->error_message;
-    }
-
-    public function getStatusCode()
-    {
-        return $this->status_code;
+        return $project;
     }
 }

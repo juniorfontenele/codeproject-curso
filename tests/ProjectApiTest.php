@@ -86,7 +86,7 @@ class ProjectApiTest extends TestCase
         $this->delete('/project/'.$project->id)
             ->seeStatusCode(200)
             ->seeJson([
-                'success' => ['Projeto excluído com sucesso']
+                'success' => ['Excluído com sucesso']
             ]);
     }
 
@@ -94,9 +94,7 @@ class ProjectApiTest extends TestCase
     {
         $this->get('/project/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-               'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testUpdateNonExistentProject()
@@ -112,25 +110,21 @@ class ProjectApiTest extends TestCase
         ];
         $this->put('/project/9123812931238123',$project)
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testDeleteNonExistentProject()
     {
         $this->delete('/project/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testInsertProjectWithoutRequiredFields()
     {
         $project = [];
         $this->post('/project',$project)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ]);
@@ -148,7 +142,7 @@ class ProjectApiTest extends TestCase
             'due_date' => 'asdas'
         ];
         $this->post('/project',$project)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ])
