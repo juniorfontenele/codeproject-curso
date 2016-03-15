@@ -8,9 +8,7 @@
 namespace CodeProject\Validators;
 
 
-use Prettus\Validator\LaravelValidator;
-
-class ClientValidator extends LaravelValidator
+class ClientValidator extends CodeProjectValidator
 {
 
     protected $rules = [
@@ -18,12 +16,6 @@ class ClientValidator extends LaravelValidator
         'email' => 'required|email|max:255',
         'responsible' => 'required|max:255',
         'phone' => 'required'
-    ];
-
-    protected $messages = [
-        'required' => 'O campo :attribute é obrigatório',
-        'email' => 'O campo :attribute deve ser um e-mail válido',
-        'max' => 'O campo :attribute deve conter :max caracteres no máximo'
     ];
 
 }
