@@ -3,7 +3,6 @@
 namespace CodeProject\Http\Controllers;
 
 use CodeProject\Repositories\ProjectRepository;
-use CodeProject\Repositories\ProjectTaskRepository;
 use CodeProject\Services\ProjectService;
 use CodeProject\Services\ProjectTaskService;
 use Illuminate\Http\Request;
