@@ -3,7 +3,9 @@
 namespace CodeProject\Http\Controllers;
 
 use CodeProject\Repositories\ProjectRepository;
+use CodeProject\Repositories\ProjectTaskRepository;
 use CodeProject\Services\ProjectService;
+use CodeProject\Services\ProjectTaskService;
 use Illuminate\Http\Request;
 
 use CodeProject\Http\Requests;
@@ -90,5 +92,53 @@ class ProjectController extends Controller
     {
         $result = $this->service->destroy($id);
         return response()->json($result,200);
+    }
+
+    public function getTasks($project_id)
+    {
+        $project = $this->repository->with(['tasks'])->find($project_id);
+        return response()->json($project->tasks,200);
+    }
+
+    public function addTask(Request $request,$project_id)
+    {
+        return response()->json($this->service->addTask($request->all(),$project_id),200);
+    }
+
+    public function removeTask($project_id,$task_id)
+    {
+        return response()->json($this->service->removeTask($task_id,$project_id),200);
+    }
+
+    public function showTask($project_id, $task_id)
+    {
+        return response()->json($this->service->showTask($task_id,$project_id),200);
+    }
+
+    public function getMembers($project_id)
+    {
+        $project = $this->repository->with('members')->find($project_id);
+        return response()->json($project->members,200);
+    }
+
+    public function addMember($project_id, $user_id)
+    {
+        return response()->json($this->service->addMember($user_id,$project_id),200);
+    }
+
+    public function removeMember($project_id, $user_id)
+    {
+        return response()->json($this->service->removeMember($user_id,$project_id),200);
+    }
+
+    public function isMember($project_id, $user_id)
+    {
+        if ($this->service->isMember($user_id,$project_id)) {
+            $msg = ['is_member' => true];
+        }
+        else {
+            $msg = ['is_member' => false];
+        }
+        return response()->json($msg,200);
     }
 }

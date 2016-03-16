@@ -18,6 +18,8 @@ class CodeProjectValidator extends LaravelValidator
         'max' => 'O campo :attribute deve conter :max caracteres no máximo',
         'min' => 'O campo :attribute deve conter :max caracteres no mínimo',
         'between' => 'O campo :attribute deve estar entre :min e :max',
-        'integer' => 'O campo :attribute deve conter um número inteiro'
+        'integer' => 'O campo :attribute deve conter um número inteiro',
+        'date_format' => 'O campo :attribute deve ser no formato :format',
+        'numeric' => 'O campo :attribute deve ser um número'
     ];
 }

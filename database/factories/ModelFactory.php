@@ -17,7 +17,7 @@ $factory->define(CodeProject\Entities\User::class, function (Faker\Generator $fa
     return [
         'name' => $faker->name,
         'email' => $faker->email,
-        'password' => bcrypt(str_random(10)),
+        'password' => bcrypt('123456'),
         'remember_token' => str_random(10),
     ];
 });
@@ -48,6 +48,18 @@ $factory->define(CodeProject\Entities\Project::class, function (Faker\Generator 
         'description' => $faker->text(200),
         'progress' => rand(0,100),
         'status' => $faker->text(50),
-        'due_date' => $faker->dateTimeBetween('+1 hour','+3 months')
+        'due_date' => $faker->dateTimeBetween('now','+3 months')->format('Y-m-d')
     ];
+});
+
+$factory->define(CodeProject\Entities\ProjectTask::class, function (Faker\Generator $faker) {
+	$faker->addProvider(new \CodeProject\Faker\Pessoa($faker));
+
+	return [
+		'name' => $faker->words(3,true),
+		'project_id' => rand(1,3),
+		'start_date' => $faker->dateTimeBetween('now','+3 months')->format('Y-m-d'),
+		'due_date' => $faker->dateTimeBetween('now','+3 months')->format('Y-m-d'),
+		'status' => rand(1,3)
+	];
 });
