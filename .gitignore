@@ -6,3 +6,4 @@ Homestead.json
 .idea
 composer.phar
 .DS_Store
+storage/database.sqlite
