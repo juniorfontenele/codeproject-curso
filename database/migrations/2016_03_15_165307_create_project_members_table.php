@@ -18,11 +18,15 @@ class CreateProjectMembersTable extends Migration
 
             $table->foreign('project_id')
                 ->references('id')
-                ->on('projects');
+                ->on('projects')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->foreign('user_id')
                 ->references('id')
-                ->on('users');
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
 
             $table->primary(['project_id','user_id']);
         });
