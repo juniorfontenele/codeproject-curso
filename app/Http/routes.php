@@ -30,25 +30,28 @@ Route::group(['middleware' => 'oauth'], function() {
     });
 
     Route::group(['prefix' => 'project'], function() {
-        //TODO: PROJECT NOTES
+        Route::group(['middleware' => 'CheckProjectPermission'], function() {
+            //TODO: PROJECT NOTES
 
-        //Project Tasks
-        Route::get('/{id}/tasks', 'ProjectController@getTasks');
-        Route::post('/{id}/task', 'ProjectController@addTask');
-        Route::get('/{id}/task/{task_id}', 'ProjectController@showTask');
-        Route::delete('/{id}/task/{task_id}', 'ProjectController@removeTask');
+            //Project Tasks
+            Route::get('/{id}/tasks', 'ProjectController@getTasks');
+            Route::post('/{id}/task', 'ProjectController@addTask');
+            Route::get('/{id}/task/{task_id}', 'ProjectController@showTask');
+            Route::delete('/{id}/task/{task_id}', 'ProjectController@removeTask');
 
-        //Project Members
-        Route::get('/{id}/members', 'ProjectController@getMembers');
-        Route::post('/{id}/member/{user_id}', 'ProjectController@addMember');
-        Route::get('/{id}/member/{user_id}', 'ProjectController@isMember');
-        Route::delete('/{id}/member/{user_id}', 'ProjectController@removeMember');
+            //Project Members
+            Route::get('/{id}/members', 'ProjectController@getMembers');
+            Route::post('/{id}/member/{user_id}', 'ProjectController@addMember');
+            Route::get('/{id}/member/{user_id}', 'ProjectController@isMember');
+            Route::delete('/{id}/member/{user_id}', 'ProjectController@removeMember');
+        });
+
 
         //Project
         Route::get('/', 'ProjectController@index');
         Route::post('/', 'ProjectController@store');
-        Route::get('/{id}', 'ProjectController@show');
-        Route::put('/{id}', 'ProjectController@update');
-        Route::delete('/{id}', 'ProjectController@destroy');
+        Route::get('/{id}', ['uses' => 'ProjectController@show', 'middleware' => 'CheckProjectPermission']);
+        Route::put('/{id}', ['uses' => 'ProjectController@update', 'middleware' => 'CheckProjectPermissionPermission']);
+        Route::delete('/{id}', ['uses' => 'ProjectController@destroy', 'middleware' => 'CheckProjectPermission']);
     });
 });

@@ -15,6 +15,7 @@ use CodeProject\Repositories\UserRepository;
 use CodeProject\Validators\ProjectTaskValidator;
 use CodeProject\Validators\ProjectValidator;
 use Illuminate\Support\MessageBag;
+use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class ProjectService
 {
@@ -61,14 +62,28 @@ class ProjectService
         $this->userRepository = $userRepository;
     }
 
+    public function index()
+    {
+        $user_id = Authorizer::getResourceOwnerId();
+        $user = $this->userRepository->find($user_id);
+        return $user->projects;
+    }
+
     public function create(array $data)
     {
+        $data['owner_id'] = Authorizer::getResourceOwnerId();
         $this->validator->with($data)->passesOrFail();
-        return $this->repository->create($data);
+        $project = $this->repository->create($data);
+        if (!$project) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao criar']),500);
+        }
+        $project->members()->attach($data['owner_id']);
+        return $project;
     }
 
     public function update(array $data, $id)
     {
+        $data['owner_id'] = Authorizer::getResourceOwnerId();
         $this->validator->with($data)->passesOrFail();
         $project = $this->repository->find($id);
         if (!$project->update($data)) {
@@ -83,6 +98,7 @@ class ProjectService
         if (!$project->delete()) {
             throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao excluir']),500);
         }
+        $project->members()->detach(Authorizer::getResourceOwnerId());
         return [
             'error' => false,
             'message' => [
@@ -93,7 +109,7 @@ class ProjectService
 
     public function show($id)
     {
-        $project = $this->repository->find($id);
+        $project = $this->repository->with(['client','owner','members'])->find($id);
         return $project;
     }
 
@@ -177,6 +193,17 @@ class ProjectService
         }
         else {
             return true;
+        }
+    }
+
+    public function isOwner($user_id, $project_id)
+    {
+        $project = $this->repository->find($project_id);
+        if ($project->owner_id == $user_id) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
