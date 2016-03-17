@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9c4f9de2a35b0c65426151b39838fb6",
-    "content-hash": "24e06f7664295d05a26308e6699a5bc2",
+    "hash": "ee60bdca007251fee73bd04ce94be6d3",
+    "content-hash": "7a8130a6f260849445e82bfcdb76d08d",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -492,16 +492,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.17",
+            "version": "1.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "02f5b6c9a8b9278c8381e3361e7bd9d641c740ca"
+                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/02f5b6c9a8b9278c8381e3361e7bd9d641c740ca",
-                "reference": "02f5b6c9a8b9278c8381e3361e7bd9d641c740ca",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
+                "reference": "e87a786e3ae12a25cf78a71bb07b4b384bfaa83a",
                 "shasum": ""
             },
             "require": {
@@ -571,20 +571,20 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2016-02-19 15:35:38"
+            "time": "2016-03-14 21:54:11"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.17.2",
+            "version": "1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24"
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
-                "reference": "bee7f0dc9c3e0b69a6039697533dca1e845c8c24",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
+                "reference": "a5f2734e8c16f3aa21b3da09715d10e15b4d2d45",
                 "shasum": ""
             },
             "require": {
@@ -613,6 +613,7 @@
                 "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
                 "ext-mongo": "Allow sending log messages to a MongoDB server",
                 "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
+                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
                 "php-console/php-console": "Allow sending log messages to Google Chrome",
                 "raven/raven": "Allow sending log messages to a Sentry server",
                 "rollbar/rollbar": "Allow sending log messages to Rollbar",
@@ -622,7 +623,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.16.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -648,7 +649,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2016-03-13 16:08:35"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -794,16 +795,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.2.1",
+            "version": "v1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc"
+                "reference": "b3313b618f4edd76523572531d5d7e22fe747430"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
-                "reference": "f078eba3bcf140fd69b5fcc3ea5ac809abf729dc",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b3313b618f4edd76523572531d5d7e22fe747430",
+                "reference": "b3313b618f4edd76523572531d5d7e22fe747430",
                 "shasum": ""
             },
             "require": {
@@ -838,20 +839,20 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-02-29 17:25:04"
+            "time": "2016-03-11 19:54:08"
         },
         {
             "name": "prettus/l5-repository",
-            "version": "2.1.7",
+            "version": "2.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andersao/l5-repository.git",
-                "reference": "e5f26527630da581b05d206b12cb06df73214488"
+                "reference": "efe486eecf883272c2a7edd53fa6e1aad77627e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/e5f26527630da581b05d206b12cb06df73214488",
-                "reference": "e5f26527630da581b05d206b12cb06df73214488",
+                "url": "https://api.github.com/repos/andersao/l5-repository/zipball/efe486eecf883272c2a7edd53fa6e1aad77627e4",
+                "reference": "efe486eecf883272c2a7edd53fa6e1aad77627e4",
                 "shasum": ""
             },
             "require": {
@@ -898,20 +899,20 @@
                 "model",
                 "repository"
             ],
-            "time": "2016-01-28 15:44:19"
+            "time": "2016-03-01 18:33:39"
         },
         {
             "name": "prettus/laravel-validation",
-            "version": "1.1.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andersao/laravel-validator.git",
-                "reference": "c3501ba6b6312b8e98098783901060c0aff2b29d"
+                "reference": "64f66f70d1f291d30370cd255b1c75ac53351d80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andersao/laravel-validator/zipball/c3501ba6b6312b8e98098783901060c0aff2b29d",
-                "reference": "c3501ba6b6312b8e98098783901060c0aff2b29d",
+                "url": "https://api.github.com/repos/andersao/laravel-validator/zipball/64f66f70d1f291d30370cd255b1c75ac53351d80",
+                "reference": "64f66f70d1f291d30370cd255b1c75ac53351d80",
                 "shasum": ""
             },
             "require": {
@@ -938,7 +939,7 @@
                 "service",
                 "validation"
             ],
-            "time": "2015-06-08 23:53:46"
+            "time": "2015-08-09 04:11:08"
         },
         {
             "name": "psr/log",
@@ -980,16 +981,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.7.1",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8"
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/5e8cedbe0a3681f18782594eefc78423f8401fc8",
-                "reference": "5e8cedbe0a3681f18782594eefc78423f8401fc8",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/e64e10b20f8d229cac76399e1f3edddb57a0f280",
+                "reference": "e64e10b20f8d229cac76399e1f3edddb57a0f280",
                 "shasum": ""
             },
             "require": {
@@ -1048,7 +1049,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2016-02-27 18:59:18"
+            "time": "2016-03-09 05:03:14"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1575,7 +1576,7 @@
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
@@ -1631,7 +1632,7 @@
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
@@ -2655,16 +2656,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.23",
+            "version": "4.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483"
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/6e351261f9cd33daf205a131a1ba61c6d33bd483",
-                "reference": "6e351261f9cd33daf205a131a1ba61c6d33bd483",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a1066c562c52900a142a0e2bbf0582994671385e",
+                "reference": "a1066c562c52900a142a0e2bbf0582994671385e",
                 "shasum": ""
             },
             "require": {
@@ -2723,7 +2724,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-02-11 14:56:33"
+            "time": "2016-03-14 06:16:08"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3204,7 +3205,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "prettus/laravel-validation": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

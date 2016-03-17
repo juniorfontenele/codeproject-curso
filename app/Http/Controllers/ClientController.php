@@ -52,12 +52,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $result = $this->service->create($request->all());
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
     /**
@@ -69,12 +64,7 @@ class ClientController extends Controller
     public function show($id)
     {
         $result = $this->service->show($id);
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
     /**
@@ -87,12 +77,7 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         $result = $this->service->update($request->all(),$id);
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
     /**
@@ -104,11 +89,6 @@ class ClientController extends Controller
     public function destroy($id)
     {
         $result = $this->service->destroy($id);
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 }

@@ -8,15 +8,16 @@
 namespace CodeProject\Repositories;
 
 
-use CodeProject\Entities\Project;
+use CodeProject\Entities\Client;
+use CodeProject\Entities\User;
 use Prettus\Repository\Eloquent\BaseRepository;
 
-class ProjectRepositoryEloquent extends BaseRepository implements ProjectRepository
+class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
 
 	public function model()
 	{
-		return Project::class;
+		return User::class;
 	}
 
 } 

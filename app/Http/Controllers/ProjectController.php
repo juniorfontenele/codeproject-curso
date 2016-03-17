@@ -4,6 +4,7 @@ namespace CodeProject\Http\Controllers;
 
 use CodeProject\Repositories\ProjectRepository;
 use CodeProject\Services\ProjectService;
+use CodeProject\Services\ProjectTaskService;
 use Illuminate\Http\Request;
 
 use CodeProject\Http\Requests;
@@ -51,12 +52,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $result = $this->service->create($request->all());
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
     /**
@@ -68,12 +64,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         $result = $this->service->show($id);
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
 
@@ -87,12 +78,7 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         $result = $this->service->update($request->all(),$id);
-        if ($result) {
-            return response()->json($result,200);
-        }
-        else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
-        }
+        return response()->json($result,200);
     }
 
     /**
@@ -104,11 +90,54 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         $result = $this->service->destroy($id);
-        if ($result) {
-            return response()->json($result,200);
+        return response()->json($result,200);
+    }
+
+    public function getTasks($project_id)
+    {
+        $project = $this->repository->with(['tasks'])->find($project_id);
+        return response()->json($project->tasks,200);
+    }
+
+    public function addTask(Request $request,$project_id)
+    {
+        return response()->json($this->service->addTask($request->all(),$project_id),200);
+    }
+
+    public function removeTask($project_id,$task_id)
+    {
+        return response()->json($this->service->removeTask($task_id,$project_id),200);
+    }
+
+    public function showTask($project_id, $task_id)
+    {
+        return response()->json($this->service->showTask($task_id,$project_id),200);
+    }
+
+    public function getMembers($project_id)
+    {
+        $project = $this->repository->with('members')->find($project_id);
+        return response()->json($project->members,200);
+    }
+
+    public function addMember($project_id, $user_id)
+    {
+        return response()->json($this->service->addMember($user_id,$project_id),200);
+    }
+
+    public function removeMember($project_id, $user_id)
+    {
+        return response()->json($this->service->removeMember($user_id,$project_id),200);
+    }
+
+    public function isMember($project_id, $user_id)
+    {
+        if ($this->service->isMember($user_id,$project_id)) {
+            $msg = ['is_member' => true];
         }
         else {
-            return response()->json($this->service->getErrorMessage(),$this->service->getStatusCode());
+            $msg = ['is_member' => false];
         }
+        return response()->json($msg,200);
     }
 }

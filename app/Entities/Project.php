@@ -16,6 +16,14 @@ class Project extends Model
         'due_date'
     ];
 
+    protected $dates = ['due_date'];
+
+    protected $casts = [
+        'owner_id' => 'integer',
+        'client_id' => 'integer',
+        'progress' => 'integer'
+    ];
+
     public function client()
     {
         return $this->belongsTo(Client::class);
@@ -24,5 +32,15 @@ class Project extends Model
     public function owner()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany(User::class,'project_members','project_id','user_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(ProjectTask::class);
     }
 }

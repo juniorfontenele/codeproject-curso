@@ -86,7 +86,7 @@ class ProjectApiTest extends TestCase
         $this->delete('/project/'.$project->id)
             ->seeStatusCode(200)
             ->seeJson([
-                'success' => ['Projeto excluído com sucesso']
+                'success' => ['Excluído com sucesso']
             ]);
     }
 
@@ -94,9 +94,7 @@ class ProjectApiTest extends TestCase
     {
         $this->get('/project/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-               'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testUpdateNonExistentProject()
@@ -112,25 +110,21 @@ class ProjectApiTest extends TestCase
         ];
         $this->put('/project/9123812931238123',$project)
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testDeleteNonExistentProject()
     {
         $this->delete('/project/9123812931238123')
             ->seeStatusCode(404)
-            ->seeJson([
-                'not_found' => ['Projeto não encontrado']
-            ]);
+            ->seeJson();
     }
 
     public function testInsertProjectWithoutRequiredFields()
     {
         $project = [];
         $this->post('/project',$project)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ]);
@@ -148,12 +142,152 @@ class ProjectApiTest extends TestCase
             'due_date' => 'asdas'
         ];
         $this->post('/project',$project)
-            ->seeStatusCode(500)
+            ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
             ])
             ->see('"due_date":[')
             ->see('valid')
             ->see('"progress"');
+    }
+
+    //Project Tasks
+
+    public function testGetTask()
+    {
+        $this->get('/project/1/tasks')
+            ->seeStatusCode(200)
+            ->seeJson();
+    }
+
+    public function testGetTaskOnNonExistingProject()
+    {
+        $this->get('/project/9999999999/tasks')
+            ->seeStatusCode(404)
+            ->seeJson();
+    }
+
+    public function testCreateNewTask()
+    {
+        $task = [
+            'name' => 'PHPUnit Task',
+            'start_date' => '2016-03-10',
+            'due_date' => '2016-04-01',
+            'status' => 1
+        ];
+        $this->post('/project/1/task',$task)
+            ->seeStatusCode(200)
+            ->seeJson(['name' => 'PHPUnit Task', 'status' => 1]);
+    }
+
+    public function testCreateNewTaskOnNonExistingProject()
+    {
+        $task = [
+            'name' => 'PHPUnit Task',
+            'start_date' => '2016-03-10',
+            'due_date' => '2016-04-01',
+            'status' => 1
+        ];
+        $this->post('/project/99999999/task',$task)
+            ->seeStatusCode(404)
+            ->seeJson();
+    }
+
+    public function testCreateNewTaskWithoutRequiredFields()
+    {
+        $task = [];
+        $this->post('/project/99999999/task',$task)
+            ->seeStatusCode(400)
+            ->seeJson()
+            ->see('"name":')
+            ->see('"start_date":')
+            ->see('"due_date":')
+            ->see('"status":');
+    }
+
+    public function testCreateNewTaskWithoutValidDate()
+    {
+        $task = [
+            'name' => 'PHPUnit Task',
+            'start_date' => '10 de Fev',
+            'due_date' => '20 de Fev',
+            'status' => 1
+        ];
+        $this->post('/project/99999999/task',$task)
+            ->seeStatusCode(400)
+            ->seeJson()
+            ->see('Y-m-d')
+            ->see('"start_date":')
+            ->see('"due_date":');
+    }
+
+    //Project Members
+
+    public function testAddProjectMember()
+    {
+        $this->post('/project/1/member/10')
+            ->seeStatusCode(200)
+            ->seeJson();
+    }
+
+    public function testRemoveProjectMember()
+    {
+        $this->delete('/project/1/member/1')
+            ->seeStatusCode(200)
+            ->seeJson();
+    }
+
+    public function testIsMemberProject()
+    {
+        $this->get('/project/1/member/1')
+            ->seeStatusCode(200)
+            ->seeJson();
+    }
+
+    public function testGetProjectMembers()
+    {
+        $this->get('/project/1/members')
+            ->seeStatusCode(200)
+            ->seeJson();
+    }
+
+    public function testAddMemberToNonExistingProject()
+    {
+        $this->post('/project/9999999999/member/1')
+            ->seeStatusCode(404)
+            ->seeJson()
+            ->see('not_found');
+    }
+
+    public function testAddNonExistingMemberToProject()
+    {
+        $this->post('/project/1/member/999999999')
+            ->seeStatusCode(404)
+            ->seeJson()
+            ->see('not_found');
+    }
+
+    public function testRemoveMemberOfNonExistingProject()
+    {
+        $this->delete('/project/9999999999/member/1')
+            ->seeStatusCode(404)
+            ->seeJson()
+            ->see('not_found');
+    }
+
+    public function testRemoveNonExistingMemberOfProject()
+    {
+        $this->delete('/project/1/member/99999999')
+            ->seeStatusCode(404)
+            ->seeJson()
+            ->see('not_found');
+    }
+
+    public function testGetMembersOfNonExistingProject()
+    {
+        $this->get('/project/999999999/members')
+            ->seeStatusCode(404)
+            ->seeJson()
+            ->see('not_found');
     }
 }
