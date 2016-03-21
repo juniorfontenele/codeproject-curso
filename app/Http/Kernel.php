@@ -35,5 +35,6 @@ class Kernel extends HttpKernel
         'oauth-client' => \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class,
         'check-authorization-params' => \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class,
         'CheckProjectPermission' => \CodeProject\Http\Middleware\CheckProjectPermission::class,
+        'CheckProjectOwner' => \CodeProject\Http\Middleware\CheckProjectOwner::class,
     ];
 }

@@ -41,9 +41,9 @@ Route::group(['middleware' => 'oauth'], function() {
 
             //Project Members
             Route::get('/{id}/members', 'ProjectController@getMembers');
-            Route::post('/{id}/member/{user_id}', 'ProjectController@addMember');
+            Route::post('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectController@addMember']);
             Route::get('/{id}/member/{user_id}', 'ProjectController@isMember');
-            Route::delete('/{id}/member/{user_id}', 'ProjectController@removeMember');
+            Route::delete('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectController@removeMember']);
         });
 
 
@@ -51,7 +51,7 @@ Route::group(['middleware' => 'oauth'], function() {
         Route::get('/', 'ProjectController@index');
         Route::post('/', 'ProjectController@store');
         Route::get('/{id}', ['uses' => 'ProjectController@show', 'middleware' => 'CheckProjectPermission']);
-        Route::put('/{id}', ['uses' => 'ProjectController@update', 'middleware' => 'CheckProjectPermissionPermission']);
-        Route::delete('/{id}', ['uses' => 'ProjectController@destroy', 'middleware' => 'CheckProjectPermission']);
+        Route::put('/{id}', ['uses' => 'ProjectController@update', 'middleware' => 'CheckProjectOwner']);
+        Route::delete('/{id}', ['uses' => 'ProjectController@destroy', 'middleware' => 'CheckProjectOwner']);
     });
 });

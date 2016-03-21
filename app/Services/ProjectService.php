@@ -98,7 +98,8 @@ class ProjectService
         if (!$project->delete()) {
             throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao excluir']),500);
         }
-        $project->members()->detach(Authorizer::getResourceOwnerId());
+        $project->members()->detach();
+        $project->tasks()->delete();
         return [
             'error' => false,
             'message' => [
