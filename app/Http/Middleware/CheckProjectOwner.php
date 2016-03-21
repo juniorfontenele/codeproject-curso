@@ -9,7 +9,7 @@ use CodeProject\Services\ProjectService;
 use Illuminate\Support\MessageBag;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
-class CheckProjectPermission
+class CheckProjectOwner
 {
 
     /**
@@ -37,7 +37,7 @@ class CheckProjectPermission
     public function handle($request, Closure $next)
     {
         $user_id = Authorizer::getResourceOwnerId();
-        if (!$this->service->isOwner($user_id,$request->id) && !$this->service->isMember($user_id,$request->id)) {
+        if (!$this->service->isOwner($user_id,$request->id)) {
             throw new CodeProjectException(new MessageBag(['forbidden' => 'Acesso negado']),403);
         }
         return $next($request);
