@@ -15,7 +15,7 @@ use CodeProject\Repositories\UserRepository;
 use CodeProject\Validators\ProjectTaskValidator;
 use CodeProject\Validators\ProjectValidator;
 use Illuminate\Support\MessageBag;
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
+use LucaDegasperi\OAuth2Server\Authorizer;
 
 class ProjectService
 {
@@ -44,6 +44,10 @@ class ProjectService
      * @var UserRepository
      */
     protected $userRepository;
+    /**
+     * @var Authorizer
+     */
+    protected $authorizer;
 
     /**
      * ProjectService constructor.
@@ -52,26 +56,28 @@ class ProjectService
      * @param ProjectTaskValidator $taskValidator
      * @param ProjectTaskRepository $taskRepository
      * @param UserRepository $userRepository
+     * @param Authorizer $authorizer
      */
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ProjectTaskValidator $taskValidator, ProjectTaskRepository $taskRepository, UserRepository $userRepository)
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ProjectTaskValidator $taskValidator, ProjectTaskRepository $taskRepository, UserRepository $userRepository, Authorizer $authorizer)
     {
         $this->repository = $repository;
         $this->validator = $validator;
         $this->taskValidator = $taskValidator;
         $this->taskRepository = $taskRepository;
         $this->userRepository = $userRepository;
+        $this->authorizer = $authorizer;
     }
 
     public function index()
     {
-        $user_id = Authorizer::getResourceOwnerId();
+        $user_id = $this->authorizer->getResourceOwnerId();
         $user = $this->userRepository->find($user_id);
         return $user->projects;
     }
 
     public function create(array $data)
     {
-        $data['owner_id'] = Authorizer::getResourceOwnerId();
+        $data['owner_id'] = $this->authorizer->getResourceOwnerId();
         $this->validator->with($data)->passesOrFail();
         $project = $this->repository->create($data);
         if (!$project) {
@@ -83,7 +89,7 @@ class ProjectService
 
     public function update(array $data, $id)
     {
-        $data['owner_id'] = Authorizer::getResourceOwnerId();
+        $data['owner_id'] = $this->authorizer->getResourceOwnerId();
         $this->validator->with($data)->passesOrFail();
         $project = $this->repository->find($id);
         if (!$project->update($data)) {

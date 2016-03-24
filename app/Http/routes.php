@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 
 //OAuth2 Authentication
-Route::post('/oauth/access_token', function() {
-    return Response::json(Authorizer::issueAccessToken());
+Route::post('/oauth/access_token', function(\LucaDegasperi\OAuth2Server\Authorizer $authorizer) {
+    return Response::json($authorizer->issueAccessToken());
 });
 
 Route::group(['middleware' => 'oauth'], function() {
