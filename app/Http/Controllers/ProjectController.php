@@ -114,6 +114,11 @@ class ProjectController extends Controller
         return response()->json($this->service->showTask($task_id,$project_id),200);
     }
 
+    public function updateTask(Request $request, $project_id, $task_id)
+    {
+        return response()->json($this->service->updateTask($request->all(),$task_id,$project_id),200);
+    }
+
     public function getMembers($project_id)
     {
         $project = $this->repository->with('members')->find($project_id);
@@ -139,5 +144,31 @@ class ProjectController extends Controller
             $msg = ['is_member' => false];
         }
         return response()->json($msg,200);
+    }
+
+    public function getNotes($project_id)
+    {
+        $project = $this->repository->with(['notes'])->find($project_id);
+        return response()->json($project->notes,200);
+    }
+
+    public function addNote(Request $request,$project_id)
+    {
+        return response()->json($this->service->addNote($request->all(),$project_id),200);
+    }
+
+    public function removeNote($project_id,$note_id)
+    {
+        return response()->json($this->service->removeNote($note_id,$project_id),200);
+    }
+
+    public function showNote($project_id, $note_id)
+    {
+        return response()->json($this->service->showNote($note_id,$project_id),200);
+    }
+
+    public function updateNote(Request $request, $project_id, $note_id)
+    {
+        return response()->json($this->service->updateNote($request->all(),$note_id,$project_id),200);
     }
 }

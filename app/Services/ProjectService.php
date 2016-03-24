@@ -9,9 +9,11 @@ namespace CodeProject\Services;
 
 
 use CodeProject\Exceptions\CodeProjectException;
+use CodeProject\Repositories\ProjectNoteRepository;
 use CodeProject\Repositories\ProjectRepository;
 use CodeProject\Repositories\ProjectTaskRepository;
 use CodeProject\Repositories\UserRepository;
+use CodeProject\Validators\ProjectNoteValidator;
 use CodeProject\Validators\ProjectTaskValidator;
 use CodeProject\Validators\ProjectValidator;
 use Illuminate\Support\MessageBag;
@@ -48,6 +50,14 @@ class ProjectService
      * @var Authorizer
      */
     protected $authorizer;
+    /**
+     * @var ProjectNoteRepository
+     */
+    protected $noteRepository;
+    /**
+     * @var ProjectNoteValidator
+     */
+    protected $noteValidator;
 
     /**
      * ProjectService constructor.
@@ -56,9 +66,11 @@ class ProjectService
      * @param ProjectTaskValidator $taskValidator
      * @param ProjectTaskRepository $taskRepository
      * @param UserRepository $userRepository
+     * @param ProjectNote $projectNote
+     * @param ProjectNoteValidator $projectNoteValidator
      * @param Authorizer $authorizer
      */
-    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ProjectTaskValidator $taskValidator, ProjectTaskRepository $taskRepository, UserRepository $userRepository, Authorizer $authorizer)
+    public function __construct(ProjectRepository $repository, ProjectValidator $validator, ProjectTaskValidator $taskValidator, ProjectTaskRepository $taskRepository, UserRepository $userRepository, ProjectNoteRepository $projectNote, ProjectNoteValidator $projectNoteValidator, Authorizer $authorizer)
     {
         $this->repository = $repository;
         $this->validator = $validator;
@@ -66,6 +78,8 @@ class ProjectService
         $this->taskRepository = $taskRepository;
         $this->userRepository = $userRepository;
         $this->authorizer = $authorizer;
+        $this->noteRepository = $projectNote;
+        $this->noteValidator = $projectNoteValidator;
     }
 
     public function index()
@@ -160,6 +174,21 @@ class ProjectService
         return $task;
     }
 
+    public function updateTask(array $data, $task_id, $project_id)
+    {
+        $data['project_id'] = $project_id;
+        $this->taskValidator->with($data)->passesOrFail();
+        $project = $this->repository->find($project_id);
+        $task = $project->tasks()->find($task_id);
+        if ($task == NULL) {
+            throw new CodeProjectException(new MessageBag(['not_found' => 'Tarefa não encontrada no projeto']),404);
+        }
+        if (!$task->update($data)) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao atualizar']),500);
+        }
+        return $task;
+    }
+
     public function addMember($user_id, $project_id)
     {
         $project = $this->repository->with('members')->find($project_id);
@@ -212,6 +241,61 @@ class ProjectService
         else {
             return false;
         }
+    }
+
+    public function addNote(array $data, $project_id)
+    {
+        $data['project_id'] = $project_id;
+        $this->noteValidator->with($data)->passesOrFail();
+        $project = $this->repository->find($project_id);
+        $note = $project->notes()->create($data);
+        if (!$note) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao criar']),500);
+        }
+        return $note;
+    }
+
+    public function removeNote($note_id, $project_id)
+    {
+        $project = $this->repository->with('notes')->find($project_id);
+        $note = $project->notes()->find($note_id);
+        if ($note == NULL) {
+            throw new CodeProjectException(new MessageBag(['not_found' => 'Nota não encontrada no projeto']),404);
+        }
+        if (!$this->noteRepository->delete($note_id)) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao excluir']),500);
+        }
+        return [
+            'error' => false,
+            'message' => [
+                'success' => ['Excluído com sucesso']
+            ]
+        ];
+    }
+
+    public function showNote($note_id, $project_id)
+    {
+        $project = $this->repository->with('notes')->find($project_id);
+        $note = $project->notes()->find($note_id);
+        if ($note == NULL) {
+            throw new CodeProjectException(new MessageBag(['not_found' => 'Nota não encontrada no projeto'],404));
+        }
+        return $note;
+    }
+
+    public function updateNote(array $data, $note_id, $project_id)
+    {
+        $data['project_id'] = $project_id;
+        $this->noteValidator->with($data)->passesOrFail();
+        $project = $this->repository->find($project_id);
+        $note = $project->notes()->find($note_id);
+        if ($note == NULL) {
+            throw new CodeProjectException(new MessageBag(['not_found' => 'Nota não encontrada no projeto']),404);
+        }
+        if (!$note->update($data)) {
+            throw new CodeProjectException(new MessageBag(['fail' => 'Falha ao atualizar']),500);
+        }
+        return $note;
     }
 
 }
