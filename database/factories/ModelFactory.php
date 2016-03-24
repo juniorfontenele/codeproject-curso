@@ -63,3 +63,10 @@ $factory->define(CodeProject\Entities\ProjectTask::class, function (Faker\Genera
 		'status' => rand(1,3)
 	];
 });
+
+$factory->define(CodeProject\Entities\ProjectNote::class, function (Faker\Generator $faker) {
+	return [
+		'text' => $faker->sentence,
+		'project_id' => rand(1,3),
+	];
+});
