@@ -36,14 +36,14 @@ Route::group(['middleware' => 'oauth'], function() {
             //Project Tasks
             Route::get('/{id}/tasks', 'ProjectController@getTasks');
             Route::post('/{id}/task', 'ProjectController@addTask');
-            Route::patch('/{id}/task/{task_id}', 'ProjectController@updateTask');
+            Route::put('/{id}/task/{task_id}', 'ProjectController@updateTask');
             Route::get('/{id}/task/{task_id}', 'ProjectController@showTask');
             Route::delete('/{id}/task/{task_id}', 'ProjectController@removeTask');
 
             //Project Notes
             Route::get('/{id}/notes', 'ProjectController@getNotes');
             Route::post('/{id}/note', 'ProjectController@addNote');
-            Route::patch('/{id}/note/{note_id}', 'ProjectController@updateNote');
+            Route::put('/{id}/note/{note_id}', 'ProjectController@updateNote');
             Route::get('/{id}/note/{note_id}', 'ProjectController@showNote');
             Route::delete('/{id}/note/{note_id}', 'ProjectController@removeNote');
 
@@ -59,7 +59,7 @@ Route::group(['middleware' => 'oauth'], function() {
         Route::get('/', 'ProjectController@index');
         Route::post('/', 'ProjectController@store');
         Route::get('/{id}', ['uses' => 'ProjectController@show', 'middleware' => 'CheckProjectPermission']);
-        Route::patch('/{id}', ['uses' => 'ProjectController@update', 'middleware' => 'CheckProjectOwner']);
+        Route::put('/{id}', ['uses' => 'ProjectController@update', 'middleware' => 'CheckProjectOwner']);
         Route::delete('/{id}', ['uses' => 'ProjectController@destroy', 'middleware' => 'CheckProjectOwner']);
     });
 });
