@@ -11,7 +11,7 @@ class ProjectApiTest extends TestCase
 
     public function testGetProjects()
     {
-        $this->get('/project')
+        $this->get('/projects')
             ->seeStatusCode(200)
             ->seeJson();
     }
@@ -27,7 +27,7 @@ class ProjectApiTest extends TestCase
             'status' => 'PHPUnit Status',
             'due_date' => '2020-01-01 00:00:00'
         ];
-        $this->post('/project',$project)
+        $this->post('/projects',$project)
             ->seeStatusCode(200)
             ->seeJson([
                 'owner_id' => 1,
@@ -64,7 +64,7 @@ class ProjectApiTest extends TestCase
         ];
         $project = \CodeProject\Entities\Project::create($project);
         $project->name = 'New PHPUnit Project Name';
-        $this->put('/project/'.$project->id, $project->toArray())
+        $this->put('/projects/'.$project->id, $project->toArray())
             ->seeStatusCode(200)
             ->seeJson([
                 'name' => 'New PHPUnit Project Name'
@@ -83,7 +83,7 @@ class ProjectApiTest extends TestCase
             'due_date' => '2020-01-01 00:00:00'
         ];
         $project = \CodeProject\Entities\Project::create($project);
-        $this->delete('/project/'.$project->id)
+        $this->delete('/projects/'.$project->id)
             ->seeStatusCode(200)
             ->seeJson([
                 'success' => ['Excluído com sucesso']
@@ -92,7 +92,7 @@ class ProjectApiTest extends TestCase
 
     public function testGetNonExistentProject()
     {
-        $this->get('/project/9123812931238123')
+        $this->get('/projects/9123812931238123')
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -108,14 +108,14 @@ class ProjectApiTest extends TestCase
             'status' => 'PHPUnit Status',
             'due_date' => '2020-01-01 00:00:00'
         ];
-        $this->put('/project/9123812931238123',$project)
+        $this->put('/projects/9123812931238123',$project)
             ->seeStatusCode(404)
             ->seeJson();
     }
 
     public function testDeleteNonExistentProject()
     {
-        $this->delete('/project/9123812931238123')
+        $this->delete('/projects/9123812931238123')
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -123,7 +123,7 @@ class ProjectApiTest extends TestCase
     public function testInsertProjectWithoutRequiredFields()
     {
         $project = [];
-        $this->post('/project',$project)
+        $this->post('/projects',$project)
             ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
@@ -141,7 +141,7 @@ class ProjectApiTest extends TestCase
             'status' => 'PHPUnit Status',
             'due_date' => 'asdas'
         ];
-        $this->post('/project',$project)
+        $this->post('/projects',$project)
             ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
@@ -155,14 +155,14 @@ class ProjectApiTest extends TestCase
 
     public function testGetTask()
     {
-        $this->get('/project/1/tasks')
+        $this->get('/projects/1/tasks')
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testGetTaskOnNonExistingProject()
     {
-        $this->get('/project/9999999999/tasks')
+        $this->get('/projects/9999999999/tasks')
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -175,7 +175,7 @@ class ProjectApiTest extends TestCase
             'due_date' => '2016-04-01',
             'status' => 1
         ];
-        $this->post('/project/1/task',$task)
+        $this->post('/projects/1/tasks',$task)
             ->seeStatusCode(200)
             ->seeJson(['name' => 'PHPUnit Task', 'status' => 1]);
     }
@@ -188,7 +188,7 @@ class ProjectApiTest extends TestCase
             'due_date' => '2016-04-01',
             'status' => 1
         ];
-        $this->post('/project/99999999/task',$task)
+        $this->post('/projects/99999999/tasks',$task)
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -196,7 +196,7 @@ class ProjectApiTest extends TestCase
     public function testCreateNewTaskWithoutRequiredFields()
     {
         $task = [];
-        $this->post('/project/99999999/task',$task)
+        $this->post('/projects/99999999/tasks',$task)
             ->seeStatusCode(400)
             ->seeJson()
             ->see('"name":')
@@ -213,7 +213,7 @@ class ProjectApiTest extends TestCase
             'due_date' => '20 de Fev',
             'status' => 1
         ];
-        $this->post('/project/99999999/task',$task)
+        $this->post('/projects/99999999/tasks',$task)
             ->seeStatusCode(400)
             ->seeJson()
             ->see('Y-m-d')
@@ -225,35 +225,35 @@ class ProjectApiTest extends TestCase
 
     public function testAddProjectMember()
     {
-        $this->post('/project/1/member/10')
+        $this->post('/projects/1/members/10')
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testRemoveProjectMember()
     {
-        $this->delete('/project/1/member/1')
+        $this->delete('/projects/1/members/1')
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testIsMemberProject()
     {
-        $this->get('/project/1/member/1')
+        $this->get('/projects/1/members/1')
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testGetProjectMembers()
     {
-        $this->get('/project/1/members')
+        $this->get('/projects/1/members')
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testAddMemberToNonExistingProject()
     {
-        $this->post('/project/9999999999/member/1')
+        $this->post('/projects/9999999999/members/1')
             ->seeStatusCode(404)
             ->seeJson()
             ->see('not_found');
@@ -261,7 +261,7 @@ class ProjectApiTest extends TestCase
 
     public function testAddNonExistingMemberToProject()
     {
-        $this->post('/project/1/member/999999999')
+        $this->post('/projects/1/members/999999999')
             ->seeStatusCode(404)
             ->seeJson()
             ->see('not_found');
@@ -269,7 +269,7 @@ class ProjectApiTest extends TestCase
 
     public function testRemoveMemberOfNonExistingProject()
     {
-        $this->delete('/project/9999999999/member/1')
+        $this->delete('/projects/9999999999/members/1')
             ->seeStatusCode(404)
             ->seeJson()
             ->see('not_found');
@@ -277,7 +277,7 @@ class ProjectApiTest extends TestCase
 
     public function testRemoveNonExistingMemberOfProject()
     {
-        $this->delete('/project/1/member/99999999')
+        $this->delete('/projects/1/members/99999999')
             ->seeStatusCode(404)
             ->seeJson()
             ->see('not_found');
@@ -285,7 +285,7 @@ class ProjectApiTest extends TestCase
 
     public function testGetMembersOfNonExistingProject()
     {
-        $this->get('/project/999999999/members')
+        $this->get('/projects/999999999/members')
             ->seeStatusCode(404)
             ->seeJson()
             ->see('not_found');

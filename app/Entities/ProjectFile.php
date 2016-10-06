@@ -1,25 +1,27 @@
 <?php
-/**
- * Author: Junior Fontenele <lcbfjr@gmail.com>
- * Date: 17/03/2016
- * Time: 14:22
- */
 
 namespace CodeProject\Entities;
-
 
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class ProjectMember extends Model implements Transformable
+class ProjectFile extends Model implements Transformable
 {
     use TransformableTrait;
 
-	public $timestamps = false;
-
     protected $fillable = [
-        'project_id',
-        'user_id'
+	    'name',
+	    'description',
+	    'extension',
+	    'size',
+	    'save_name',
+	    'mime_type'
     ];
+
+	public function project()
+	{
+		return $this->belongsTo(Project::class);
+	}
+
 }

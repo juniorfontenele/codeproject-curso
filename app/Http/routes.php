@@ -21,6 +21,8 @@ Route::post('/oauth/access_token', function(\LucaDegasperi\OAuth2Server\Authoriz
 });
 
 Route::group(['middleware' => 'oauth'], function() {
+
+	//Clients
     Route::group(['prefix' => 'client'], function() {
         Route::get('/', 'ClientController@index');
         Route::post('/', 'ClientController@store');
@@ -29,31 +31,36 @@ Route::group(['middleware' => 'oauth'], function() {
         Route::delete('/{id}', 'ClientController@destroy');
     });
 
+	//Projects
     Route::group(['prefix' => 'project'], function() {
         Route::group(['middleware' => 'CheckProjectPermission'], function() {
-            //TODO: PROJECT NOTES
-
             //Project Tasks
-            Route::get('/{id}/tasks', 'ProjectController@getTasks');
-            Route::post('/{id}/task', 'ProjectController@addTask');
-            Route::put('/{id}/task/{task_id}', 'ProjectController@updateTask');
-            Route::get('/{id}/task/{task_id}', 'ProjectController@showTask');
-            Route::delete('/{id}/task/{task_id}', 'ProjectController@removeTask');
+            Route::get('/{id}/task', 'ProjectTaskController@getTasks');
+            Route::post('/{id}/task', 'ProjectTaskController@addTask');
+            Route::put('/{id}/task/{task_id}', 'ProjectTaskController@updateTask');
+            Route::get('/{id}/task/{task_id}', 'ProjectTaskController@showTask');
+            Route::delete('/{id}/task/{task_id}', 'ProjectTaskController@removeTask');
 
             //Project Notes
-            Route::get('/{id}/notes', 'ProjectController@getNotes');
-            Route::post('/{id}/note', 'ProjectController@addNote');
-            Route::put('/{id}/note/{note_id}', 'ProjectController@updateNote');
-            Route::get('/{id}/note/{note_id}', 'ProjectController@showNote');
-            Route::delete('/{id}/note/{note_id}', 'ProjectController@removeNote');
+            Route::get('/{id}/note', 'ProjectNoteController@getNotes');
+            Route::post('/{id}/note', 'ProjectNoteController@addNote');
+            Route::put('/{id}/note/{note_id}', 'ProjectNoteController@updateNote');
+            Route::get('/{id}/note/{note_id}', 'ProjectNoteController@showNote');
+            Route::delete('/{id}/note/{note_id}', 'ProjectNoteController@removeNote');
 
             //Project Members
-            Route::get('/{id}/members', 'ProjectController@getMembers');
-            Route::post('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectController@addMember']);
-            Route::get('/{id}/member/{user_id}', 'ProjectController@isMember');
-            Route::delete('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectController@removeMember']);
-        });
+            Route::get('/{id}/member', 'ProjectMemberController@getMembers');
+            Route::post('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectMemberController@addMember']);
+            Route::get('/{id}/member/{user_id}', 'ProjectMemberController@isMember');
+            Route::delete('/{id}/member/{user_id}', ['middleware' => 'CheckProjectOwner', 'uses' => 'ProjectMemberController@removeMember']);
 
+	        //Project Files
+	        Route::get('/{id}/file', 'ProjectFileController@getFiles');
+	        Route::post('/{id}/file', 'ProjectFileController@addFile');
+	        //Route::put('/{id}/file/{file_id}', 'ProjectFileController@updateFile');
+	        Route::get('/{id}/file/{file_id}', 'ProjectFileController@showFile');
+	        Route::delete('/{id}/file/{file_id}', 'ProjectFileController@removeFile');
+        });
 
         //Project
         Route::get('/', 'ProjectController@index');

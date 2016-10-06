@@ -11,7 +11,7 @@ class ClientApiTest extends TestCase
 
     public function testGetClients()
     {
-        $this->get('/client')
+        $this->get('/clients')
             ->seeStatusCode(200)
             ->seeJson();
     }
@@ -26,7 +26,7 @@ class ClientApiTest extends TestCase
             'phone' => '(00) 0000-0000',
             'obs' => 'PHPUnit OBS'
         ];
-        $this->post('/client',$client)
+        $this->post('/clients',$client)
             ->seeStatusCode(200)
             ->seeJson([
                 'name' => 'PHPUnit Test Client',
@@ -60,7 +60,7 @@ class ClientApiTest extends TestCase
         ];
         $client = \CodeProject\Entities\Client::create($client);
         $client->name = 'New PHPUnit Name';
-        $this->put('/client/'.$client->id, $client->toArray())
+        $this->put('/clients/'.$client->id, $client->toArray())
             ->seeStatusCode(200)
             ->seeJson([
                 'name' => 'New PHPUnit Name'
@@ -78,14 +78,14 @@ class ClientApiTest extends TestCase
             'obs' => 'PHPUnit OBS'
         ];
         $client = \CodeProject\Entities\Client::create($client);
-        $this->delete('/client/'.$client->id)
+        $this->delete('/clients/'.$client->id)
             ->seeStatusCode(200)
             ->seeJson();
     }
 
     public function testGetNonExistentClient()
     {
-        $this->get('/client/9123812931238123')
+        $this->get('/clients/9123812931238123')
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -100,14 +100,14 @@ class ClientApiTest extends TestCase
             'phone' => '(00) 0000-0000',
             'obs' => 'New PHPUnit OBS'
         ];
-        $this->put('/client/9123812931238123',$client)
+        $this->put('/clients/9123812931238123',$client)
             ->seeStatusCode(404)
             ->seeJson();
     }
 
     public function testDeleteNonExistentClient()
     {
-        $this->delete('/client/9123812931238123')
+        $this->delete('/clients/9123812931238123')
             ->seeStatusCode(404)
             ->seeJson();
     }
@@ -115,7 +115,7 @@ class ClientApiTest extends TestCase
     public function testInsertClientWithoutRequiredFields()
     {
         $client = [];
-        $this->post('/client',$client)
+        $this->post('/clients',$client)
             ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
@@ -132,7 +132,7 @@ class ClientApiTest extends TestCase
             'phone' => '(00) 0000-0000',
             'obs' => 'New PHPUnit OBS'
         ];
-        $this->post('/client',$client)
+        $this->post('/clients',$client)
             ->seeStatusCode(400)
             ->seeJson([
                 'error' => true,
